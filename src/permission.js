@@ -16,11 +16,14 @@ router.beforeEach(async(to, from, next) => {
 
   // set page title
   document.title = getPageTitle(to.meta.title)
+  next()
 
   // determine whether the user has logged in
   const hasToken = getToken()
 
   if (hasToken) {
+    // jsonp cors proxy nginx
+    // 有token，并且是登录状态下，就跳转到主页
     if (to.path === '/login') {
       // if is logged in, redirect to the home page
       next({ path: '/' })
@@ -33,6 +36,7 @@ router.beforeEach(async(to, from, next) => {
         try {
           // get user info
           await store.dispatch('user/getInfo')
+          await store.dispatch('user/getUserInfoById')
 
           next()
         } catch (error) {
