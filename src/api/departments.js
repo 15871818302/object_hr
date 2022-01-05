@@ -7,3 +7,20 @@ export function getDepartmentList() {
     method: 'get'
   })
 }
+
+// 新增部门
+export function addDepartment(data) {
+  return request({
+    url: '/company/department',
+    method: 'post',
+    data
+  })
+}
+
+// 删除部门
+export function deleteDepartment(id) {
+  return request({
+    url: `/company/department/${id}`,
+    method: 'delete'
+  })
+}

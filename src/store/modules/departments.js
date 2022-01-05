@@ -1,7 +1,8 @@
 import { getDepartmentList } from '@/api/departments'
 // 导入树形数据转换的工具函数
-import { transToTree } from '@/utils/index'
-
+// import { transToTree } from '@/utils/index'
+// 导入树形数据转换的第三方包
+import arrayToTree from 'array-to-tree'
 const list = () => {
   return {
     departmentList: []
@@ -12,7 +13,10 @@ const state = list()
 
 const mutations = {
   GET_LIST(state, payload) {
-    state.departmentList = transToTree(payload)
+    state.departmentList = arrayToTree(payload, {
+      parentProperty: 'pid',
+      customID: 'id'
+    })
   }
 }
 
