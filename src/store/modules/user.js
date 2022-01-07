@@ -44,7 +44,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       login(userInfo)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           const { data } = response
           commit('SET_TOKEN', data)
           // setToken(data.token)
@@ -62,7 +62,7 @@ const actions = {
       getInfo(state.token)
         .then((response) => {
           const { data } = response
-          console.log(data)
+          // console.log(data)
 
           if (!data) {
             return reject('Verification failed, please Login again.')
@@ -108,7 +108,7 @@ const actions = {
         const { data: res } = await getUserInfo(state.userId)
         commit('GET_USERINFO', res)
         commit('SET_AVATAR', res.staffPhoto)
-        console.log(res)
+        // console.log(res)
         resolve()
       } catch (error) {
         reject(error)

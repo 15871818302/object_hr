@@ -24,3 +24,12 @@ export function deleteDepartment(id) {
     method: 'delete'
   })
 }
+
+// 编辑部门
+export function updateDepartment(data) {
+  return request({
+    url: `/company/department/${data.id}`,
+    method: 'put',
+    data
+  })
+}

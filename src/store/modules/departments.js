@@ -5,7 +5,8 @@ import { getDepartmentList } from '@/api/departments'
 import arrayToTree from 'array-to-tree'
 const list = () => {
   return {
-    departmentList: []
+    departmentList: [],
+    deptData: {}
   }
 }
 
@@ -17,6 +18,9 @@ const mutations = {
       parentProperty: 'pid',
       customID: 'id'
     })
+  },
+  GET_INFO(state, payload) {
+    state.deptData = payload
   }
 }
 

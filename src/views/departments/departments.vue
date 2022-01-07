@@ -62,7 +62,9 @@
                           <el-dropdown-item
                             @click.native="addBtn(data.id)"
                           >添加子部门</el-dropdown-item>
-                          <el-dropdown-item>编辑部门</el-dropdown-item>
+                          <el-dropdown-item
+                            @click.native="editBtn(data)"
+                          >编辑部门</el-dropdown-item>
                           <el-dropdown-item
                             @click.native="delBtn(data.id)"
                           >删除部门</el-dropdown-item>
@@ -77,7 +79,12 @@
         </div>
         <!-- 弹出框部分 -->
         <el-dialog title="提示" :visible.sync="showDialog" width="50%">
-          <dialogEdit :pid="id" @success="successHandler" />
+          <dialogEdit
+            v-if="showDialog"
+            :is-edit="isEdit"
+            :pid="id"
+            @success="successHandler"
+          />
         </el-dialog>
         <!-- 删除弹出框 -->
         <el-dialog title="警告" :visible.sync="delVisible" width="30%">
@@ -115,12 +122,13 @@ export default {
       activeName: 'first',
       showDialog: false,
       delVisible: false,
+      isEdit: false,
       id: ''
     }
   },
 
   computed: {
-    ...mapState('departments', ['departmentList'])
+    ...mapState('departments', ['departmentList', 'deptData'])
   },
 
   created() {
@@ -130,12 +138,19 @@ export default {
 
   methods: {
     addBtn(id) {
+      this.isEdit = false
       this.showDialog = true
       this.id = id
     },
     delBtn(id) {
       this.delVisible = true
       this.id = id
+    },
+    editBtn(data) {
+      this.isEdit = true
+      this.showDialog = true
+      // this.deptData = data
+      this.$store.commit('departments/GET_INFO', data)
     },
     successHandler() {
       // 成功之后关闭弹出框
