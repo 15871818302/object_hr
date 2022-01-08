@@ -11,6 +11,7 @@
                 icon="el-icon-plus"
                 size="small"
                 type="primary"
+                @click="addRole"
               >新增角色</el-button>
             </el-row>
             <!-- 表格 -->
@@ -21,7 +22,11 @@
               <el-table-column label="操作">
                 <template v-slot="scope">
                   <el-button size="small" type="success">分配权限</el-button>
-                  <el-button size="small" type="primary">编辑</el-button>
+                  <el-button
+                    size="small"
+                    type="primary"
+                    @click="editBtn(scope.row)"
+                  >编辑</el-button>
                   <el-button size="small" type="danger">删除</el-button>
                 </template>
               </el-table-column>
@@ -39,7 +44,7 @@
                 :page-sizes="[2, 4, 6, 8]"
                 :page-size="pageParams.pagesize"
                 layout="sizes, prev, pager, next, jumper"
-                :total="100"
+                :total="total"
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
               />
@@ -47,16 +52,11 @@
             <!-- 弹出框 -->
             <el-dialog
               title="新增角色"
-              :visible.sync="setDialogVisible"
+              :visible.sync="dialogVisible"
               width="50%"
+              @close="closeHandler"
             >
-              <setDialog
-                v-if="setDialogVisible"
-                :is-edit="isEdit"
-                :visible.sync="setDialogVisible"
-                :single-role-form="form"
-                @success="success"
-              />
+              <setDialog v-if="dialogVisible" :visible.sync="dialogVisible" />
             </el-dialog>
           </el-tab-pane>
           <el-tab-pane label="公司信息" name="second">公司信息</el-tab-pane>
@@ -69,38 +69,69 @@
 <script>
 // 导入vuex
 import { mapState } from 'vuex'
+// 导入组件
+import setDialog from './setDialog.vue'
 export default {
   name: 'VueAdminTemplateIndex',
 
+  components: {
+    setDialog
+  },
   data() {
     return {
       activeName: 'second',
-      setDialogVisible: false,
-      isEdit: false
+      dialogVisible: false
     }
   },
 
   computed: {
-    ...mapState('setting', ['pageParams', 'roleList', 'total', 'form'])
+    ...mapState('setting', [
+      'pageParams',
+      'roleList',
+      'total',
+      'form',
+      'setDialogVisible',
+      'isEdit'
+    ])
+  },
+
+  created() {
+    this.$store.dispatch('setting/getRoleList')
   },
 
   methods: {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.$store.commit('setting/changePageSize', val)
-      // 切换页面大小时，重新给页面大小赋值
-      // this.pageParams.pagesize = val
-      // 重新发送请求并刷新页面
-      // this.initUserList()
+      this.$store.dispatch('setting/getRoleList')
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       // 重新给页码赋值
       // 将页码值赋值给vuex中
       this.$store.commit('setting/changePage', val)
-      // this.pageParams.page = val
-      // 切换页面时，重新发送请求刷新页面
-      // this.initUserList()
+      this.$store.dispatch('setting/getRoleList')
+    },
+    // 添加角色
+    addRole() {
+      this.dialogVisible = true
+      // 在vuex中更改数据
+      this.$store.commit('setting/controlDialog', true)
+      this.$store.commit('setting/controlEdit', false)
+    },
+    // 关闭弹出框的回调
+    closeHandler() {
+      this.$store.commit('setting/controlDialog', false)
+      this.$store.commit('setting/controlEdit', false)
+    },
+    // 编辑按钮
+    editBtn(data) {
+      this.dialogVisible = true
+      // console.log(data)
+      // 点击编辑按钮，就让isedit为真
+      this.$store.commit('setting/controlEdit', true)
+      // 并且将data的数据传递给vuex
+      this.$store.commit('setting/editData', data)
     }
   }
 }
