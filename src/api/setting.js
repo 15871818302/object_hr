@@ -25,3 +25,11 @@ export function updateStaff(data) {
     data
   })
 }
+
+// 删除角色
+export function deleteRole(id) {
+  return request({
+    url: `/sys/role/${id}`,
+    method: 'delete'
+  })
+}

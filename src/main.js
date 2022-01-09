@@ -16,6 +16,8 @@ import plugin from '@/directives'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+// 导入批量注册组件的函数
+import '@/components'
 
 /**
  * If you don't want to use mock-server

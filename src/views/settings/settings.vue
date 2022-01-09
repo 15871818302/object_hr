@@ -27,7 +27,11 @@
                     type="primary"
                     @click="editBtn(scope.row)"
                   >编辑</el-button>
-                  <el-button size="small" type="danger">删除</el-button>
+                  <el-button
+                    size="small"
+                    type="danger"
+                    @click="delBtn(scope.row.id)"
+                  >删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -97,6 +101,7 @@ export default {
 
   created() {
     this.$store.dispatch('setting/getRoleList')
+    // console.log(this.pageParams)
   },
 
   methods: {
@@ -104,6 +109,7 @@ export default {
       console.log(`每页 ${val} 条`)
       this.$store.commit('setting/changePageSize', val)
       this.$store.dispatch('setting/getRoleList')
+      console.log(this.pageParams)
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
@@ -132,6 +138,19 @@ export default {
       this.$store.commit('setting/controlEdit', true)
       // 并且将data的数据传递给vuex
       this.$store.commit('setting/editData', data)
+    },
+    // 删除角色
+    delBtn(id) {
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          // 向vuex中发送数据，进行数据的删除
+          this.$store.dispatch('setting/delRole', id)
+        })
+        .catch((e) => e)
     }
   }
 }

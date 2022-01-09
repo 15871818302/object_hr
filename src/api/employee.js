@@ -7,3 +7,12 @@ export function getManagerList() {
     method: 'get'
   })
 }
+
+// 获取员工列表
+export function getEmployeeList(page, size) {
+  return request({
+    methods: 'get',
+    url: '/sys/user',
+    params: { page, size }
+  })
+}
