@@ -4,8 +4,14 @@
       <ToolPage>
         <template #right>
           <el-button type="primary">导出</el-button>
-          <el-button type="primary">导入</el-button>
-          <el-button type="primary">+ 新增员工</el-button>
+          <el-button
+            type="primary"
+            @click="$router.push({ name: 'uploadExcel' })"
+          >导入</el-button>
+          <el-button
+            type="primary"
+            @click="addVisible = true"
+          >+ 新增员工</el-button>
         </template>
       </ToolPage>
       <el-card>
@@ -29,7 +35,10 @@
           <el-table-column label="操作" width="280">
             <template>
               <el-button type="text" size="small">查看</el-button>
-              <el-button type="text" size="small">分配角色</el-button>
+              <el-button type="text" size="small">转正</el-button>
+              <el-button type="text" size="small">调岗</el-button>
+              <el-button type="text" size="small">离职</el-button>
+              <el-button type="text" size="small">角色</el-button>
               <el-button type="text" size="small">删除</el-button>
             </template>
           </el-table-column>
@@ -48,6 +57,10 @@
             @current-change="handleCurrentChange"
           />
         </el-row>
+        <!-- 弹出框 -->
+        <el-dialog title="新增员工" :visible.sync="addVisible" width="50%">
+          <emp-dialog :visible.sync="addVisible" @success="success" />
+        </el-dialog>
       </el-card>
     </div>
   </div>
@@ -56,15 +69,20 @@
 <script>
 // 导入api中获取员工列表的函数
 import { getEmployeeList } from '@/api/employee'
+// 导入子组件
+import empDialog from './empDialog.vue'
 export default {
   name: 'VueAdminTemplateIndex',
-
+  components: {
+    empDialog
+  },
   data() {
     return {
       page: 1,
       size: 10,
       total: 1,
-      userList: []
+      userList: [],
+      addVisible: false
     }
   },
   created() {
@@ -75,7 +93,7 @@ export default {
   methods: {
     async getUserList() {
       const res = await getEmployeeList(this.page, this.size)
-      console.log(res)
+      // console.log(res)
       this.userList = res.data.rows
       this.total = res.data.total
     },
@@ -86,9 +104,17 @@ export default {
       this.page = val
       // 重新发送请求
       this.getUserList()
+    },
+    // 成功发送请求之后的回调
+    success() {
+      this.getUserList()
     }
   }
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.el-dialog__header {
+  background-color: rgb(124, 191, 253) !important;
+}
+</style>

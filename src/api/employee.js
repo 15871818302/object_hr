@@ -16,3 +16,12 @@ export function getEmployeeList(page, size) {
     params: { page, size }
   })
 }
+
+// 新增员工
+export function addStaff(data) {
+  return request({
+    method: 'post',
+    url: '/sys/user',
+    data
+  })
+}
