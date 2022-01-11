@@ -25,3 +25,12 @@ export function addStaff(data) {
     data
   })
 }
+
+// 批量添加员工
+export function importEmployee(data) {
+  return request({
+    url: '/sys/user/batch',
+    method: 'post',
+    data
+  })
+}
