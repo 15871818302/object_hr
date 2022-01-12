@@ -3,7 +3,7 @@
     <div class="app-container">
       <ToolPage>
         <template #right>
-          <el-button type="primary">导出</el-button>
+          <el-button type="primary" @click="handleDownload">导出</el-button>
           <el-button
             type="primary"
             @click="$router.push({ name: 'uploadExcel' })"
@@ -33,8 +33,14 @@
           </el-table-column>
           <el-table-column prop="enableState" label="工作状态" />
           <el-table-column label="操作" width="280">
-            <template>
-              <el-button type="text" size="small">查看</el-button>
+            <template v-slot="scope">
+              <el-button
+                type="text"
+                size="small"
+                @click="
+                  $router.push({ name: 'detail', params: { id: scope.row.id } })
+                "
+              >查看</el-button>
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
@@ -82,7 +88,20 @@ export default {
       size: 10,
       total: 1,
       userList: [],
-      addVisible: false
+      addVisible: false,
+      tHeader: [],
+      map: {
+        id: '编号',
+        password: '密码',
+        mobile: '手机号',
+        username: '姓名',
+        timeOfEntry: '入职日期',
+        formOfEmployment: '聘用形式',
+        correctionTime: '转正日期',
+        workNumber: '工号',
+        departmentName: '部门',
+        staffPhoto: '头像地址'
+      }
     }
   },
   created() {
@@ -108,6 +127,42 @@ export default {
     // 成功发送请求之后的回调
     success() {
       this.getUserList()
+    },
+    // 导出excel
+    handleDownload() {
+      this.tHeader = Object.values(this.map)
+      this.downloadLoading = true
+      import('@/vendor/Export2Excel').then((excel) => {
+        // const tHeader = ['Id', 'Title', 'Author', 'Readings', 'Date']
+        // const filterVal = ['id', 'title', 'author', 'pageviews', 'display_time']
+        const list = this.userList
+        const data = this.formatJson(list)
+        console.log(data)
+        excel.export_json_to_excel({
+          header: this.tHeader,
+          data,
+          filename: this.filename,
+          autoWidth: this.autoWidth,
+          bookType: this.bookType
+        })
+        this.downloadLoading = false
+      })
+    },
+    formatJson(list) {
+      // console.log(list)
+      return list.map((item) => {
+        // 设置英文键
+        // 如果直接对item进行循环，会导致循环出来的变量会多一个undefined，需要对遍历出来的英文键进行循环
+        const enKey = Object.keys(this.map)
+        // console.log(item)
+        const obj = {}
+        for (const key of enKey) {
+          // if (this.map[key] === undefined) return
+          obj[this.map[key]] = item[key]
+        }
+        console.log(obj)
+        return Object.values(obj)
+      })
     }
   }
 }

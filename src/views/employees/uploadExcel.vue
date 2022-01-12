@@ -35,7 +35,7 @@ export default {
         聘用形式: 'formOfEmployment'
       }
       // console.log(results)
-      results.map((item) => {
+      const arr = results.map((item) => {
         // console.log(item)
         const zh = Object.keys(item)
         // console.log(zh)
@@ -54,13 +54,14 @@ export default {
         // console.log(obj)
         return obj
       })
+      console.log(arr)
       // 添加完成之后发送请求
-      const res = await importEmployee(results)
-      console.log(res)
-      // if (res.success) {
-      //   // 成功之后跳转到上一个页面
-      //   this.$router.push({ name: 'employees' })
-      // }
+      const res = await importEmployee(arr)
+      // console.log(res)
+      if (res.success) {
+        // 成功之后跳转到上一个页面
+        this.$router.push({ name: 'employees' })
+      }
     }
   }
 }
