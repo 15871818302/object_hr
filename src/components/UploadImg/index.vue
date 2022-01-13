@@ -52,8 +52,9 @@ export default {
 
       // SECRETID 和 SECRETKEY请登录 https://console.cloud.tencent.com/cam/capi 进行查看和管理
       var cos = new COS({
-        SecretId: 'AKID5zd18yXpwnOilY4IFvLUMwHMULuIPFo7',
-        SecretKey: '3pFUTDhxzmJacPxFI5ctwjGXYKr8AxTi'
+        // 上传github进行密钥的隐藏
+        SecretId: '1111',
+        SecretKey: '222'
       })
       cos.putObject(
         {
