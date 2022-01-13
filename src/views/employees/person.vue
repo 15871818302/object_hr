@@ -78,19 +78,19 @@ export default {
     // 获取员工基本信息
     async getStaffInfo() {
       const res = await getEmployeeInfo(this.$route.params.id)
-      console.log(res)
+      // console.log(res)
       if (res.success) {
         this.userInfo = res.data
       }
     },
     success(src) {
-      console.log(src)
+      // console.log(src)
       this.userInfo.staffPhoto = src
     },
     // 根据登录的信息获取当前用户的id
     async getUserId() {
       const res = await getInfo()
-      console.log(res)
+      // console.log(res)
       if (res.success) {
         this.confirmId = res.data.userId
       }
