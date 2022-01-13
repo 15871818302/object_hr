@@ -39,8 +39,9 @@ module.exports = {
     proxy: {
       '/api': {
         // 如果请求接口中有/api，就向下面的服务器发送请求
-        target: 'http://ihrm-java.itheima.net'
+        // target: 'http://ihrm-java.itheima.net'
         // target: 'http://192.168.91.150:3000'
+        target: 'http://ihrm.itheima.net/'
       }
     }
     // before: require('./mock/mock-server.js')

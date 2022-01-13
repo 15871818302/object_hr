@@ -34,3 +34,19 @@ export function importEmployee(data) {
     data
   })
 }
+
+// 获取员工基本信息
+export function getEmployeeInfo(id) {
+  return request({
+    url: `/sys/user/${id}`
+  })
+}
+
+// 保存员工基本信息
+export function saveEmployeeInfo(data) {
+  return request({
+    url: `/sys/user/${data.id}`,
+    method: 'put',
+    data
+  })
+}
