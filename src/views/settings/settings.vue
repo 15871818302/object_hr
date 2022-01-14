@@ -21,7 +21,11 @@
               <el-table-column prop="description" label="描述" />
               <el-table-column label="操作">
                 <template v-slot="scope">
-                  <el-button size="small" type="success">分配权限</el-button>
+                  <el-button
+                    size="small"
+                    type="success"
+                    @click="assignBtn(scope.row.id)"
+                  >分配权限</el-button>
                   <el-button
                     size="small"
                     type="primary"
@@ -62,6 +66,14 @@
             >
               <setDialog v-if="dialogVisible" :visible.sync="dialogVisible" />
             </el-dialog>
+            <!-- 分配权限弹出框 -->
+            <el-dialog
+              title="分配权限"
+              :visible.sync="permissionVisible"
+              width="50%"
+            ><permissionDialog
+              :role-id="roleId"
+            /></el-dialog>
           </el-tab-pane>
           <el-tab-pane label="公司信息" name="second">公司信息</el-tab-pane>
         </el-tabs>
@@ -75,16 +87,20 @@
 import { mapState } from 'vuex'
 // 导入组件
 import setDialog from './setDialog.vue'
+import permissionDialog from './permissionList.vue'
 export default {
   name: 'VueAdminTemplateIndex',
 
   components: {
-    setDialog
+    setDialog,
+    permissionDialog
   },
   data() {
     return {
       activeName: 'second',
-      dialogVisible: false
+      dialogVisible: false,
+      permissionVisible: false,
+      roleId: ''
     }
   },
 
@@ -151,6 +167,11 @@ export default {
           this.$store.dispatch('setting/delRole', id)
         })
         .catch((e) => e)
+    },
+    // 分配权限
+    assignBtn(id) {
+      this.permissionVisible = true
+      this.roleId = id
     }
   }
 }

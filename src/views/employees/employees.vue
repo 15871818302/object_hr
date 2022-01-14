@@ -44,7 +44,11 @@
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
-              <el-button type="text" size="small">角色</el-button>
+              <el-button
+                type="text"
+                size="small"
+                @click="roleBtn(scope.row.id)"
+              >角色</el-button>
               <el-button type="text" size="small">删除</el-button>
             </template>
           </el-table-column>
@@ -67,6 +71,14 @@
         <el-dialog title="新增员工" :visible.sync="addVisible" width="50%">
           <emp-dialog :visible.sync="addVisible" @success="success" />
         </el-dialog>
+        <!-- 弹出框 分配角色 -->
+        <el-dialog title="分配角色" :visible.sync="roleVisible" width="50%">
+          <role-dialog
+            v-if="roleVisible"
+            :visible.sync="roleVisible"
+            :role-id="roleId"
+          />
+        </el-dialog>
       </el-card>
     </div>
   </div>
@@ -77,10 +89,12 @@
 import { getEmployeeList } from '@/api/employee'
 // 导入子组件
 import empDialog from './empDialog.vue'
+import roleDialog from './roleDialog.vue'
 export default {
   name: 'VueAdminTemplateIndex',
   components: {
-    empDialog
+    empDialog,
+    roleDialog
   },
   data() {
     return {
@@ -89,7 +103,9 @@ export default {
       total: 1,
       userList: [],
       addVisible: false,
+      roleVisible: false,
       tHeader: [],
+      roleId: '',
       map: {
         id: '编号',
         password: '密码',
@@ -163,6 +179,11 @@ export default {
         console.log(obj)
         return Object.values(obj)
       })
+    },
+    // 角色选择框
+    roleBtn(id) {
+      this.roleVisible = true
+      this.roleId = id
     }
   }
 }
