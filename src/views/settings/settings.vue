@@ -72,6 +72,8 @@
               :visible.sync="permissionVisible"
               width="50%"
             ><permissionDialog
+              v-if="permissionVisible"
+              :visible.sync="permissionVisible"
               :role-id="roleId"
             /></el-dialog>
           </el-tab-pane>

@@ -8,7 +8,8 @@ const getDefaultState = () => {
     name: '',
     avatar: '',
     userId: '',
-    userInfoById: {}
+    userInfoById: {},
+    initUserInfo: {}
   }
 }
 
@@ -34,6 +35,9 @@ const mutations = {
   },
   GET_USERINFO: (state, payload) => {
     state.userInfoById = payload
+  },
+  GET_INFO: (state, payload) => {
+    state.initUserInfo = payload
   }
 }
 
@@ -72,6 +76,7 @@ const actions = {
 
           commit('SET_NAME', username)
           commit('GET_USERID', data.userId)
+          commit('GET_INFO', data)
           resolve(data)
         })
         .catch((error) => {

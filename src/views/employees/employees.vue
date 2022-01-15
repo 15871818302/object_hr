@@ -3,7 +3,11 @@
     <div class="app-container">
       <ToolPage>
         <template #right>
-          <el-button type="primary" @click="handleDownload">导出</el-button>
+          <el-button
+            v-if="$store.state.user.initUserInfo.roles.points.includes('work')"
+            type="primary"
+            @click="handleDownload"
+          >导出</el-button>
           <el-button
             type="primary"
             @click="$router.push({ name: 'uploadExcel' })"

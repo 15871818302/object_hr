@@ -5,6 +5,7 @@ import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
+import { asyncRoutes } from '@/router'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -37,8 +38,22 @@ router.beforeEach(async(to, from, next) => {
           // get user info
           await store.dispatch('user/getInfo')
           await store.dispatch('user/getUserInfoById')
-
-          next()
+          // console.log(router)
+          // console.log(asyncRoutes)
+          console.log(store.state.user.initUserInfo.roles.menus)
+          const newArr = asyncRoutes.filter((item) => {
+            // console.log(item.children[0].name)
+            return store.state.user.initUserInfo.roles.menus.includes(
+              item.children[0].name
+            )
+          })
+          // console.log(newArr)
+          // 给动态路由匹配规则
+          router.addRoutes(newArr)
+          router.addRoutes([{ path: '*', redirect: '/404', hidden: true }])
+          // 向vuex中存储数据
+          store.commit('menu/modifyList', newArr)
+          next(to.path)
         } catch (error) {
           // remove token and go to login page to re-login
           await store.dispatch('user/resetToken')
