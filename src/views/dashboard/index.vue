@@ -25,6 +25,7 @@
             <span>工作日历</span>
           </div>
           <!-- 放置日历组件 -->
+          <calendar />
         </el-card>
         <!-- 公告 -->
         <el-card class="box-card">
@@ -93,6 +94,7 @@
             <span>绩效指数</span>
           </div>
           <!-- 放置雷达图 -->
+          <radar />
         </el-card>
         <!-- 帮助连接 -->
         <el-card class="box-card">
@@ -130,10 +132,15 @@
 <script>
 import { mapState } from 'vuex'
 import defaultImg from '@/assets/common/head.jpg'
+import calendar from './calendar.vue'
+import radar from './radar.vue'
 export default {
   name: 'VueAdminTemplateIndex',
 
-  components: {},
+  components: {
+    calendar,
+    radar
+  },
 
   data() {
     return {

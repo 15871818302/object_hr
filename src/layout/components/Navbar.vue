@@ -9,6 +9,19 @@
     <breadcrumb class="breadcrumb-container" />
 
     <div class="right-menu">
+      <el-dropdown>
+        <span class="el-dropdown-link">
+          多语言<i class="el-icon-arrow-down el-icon--right" />
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item
+            @click.native="$i18n.locale = 'zh'"
+          >中文</el-dropdown-item>
+          <el-dropdown-item
+            @click.native="$i18n.locale = 'en'"
+          >English</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
       <el-dropdown class="avatar-container" trigger="hover">
         <div class="avatar-wrapper">
           <img v-errImg="defaultImg" :src="avatar" class="user-avatar">
@@ -61,6 +74,13 @@ export default {
 
 <style lang="scss" scoped>
 .navbar {
+  .el-dropdown-link {
+    cursor: pointer;
+    color: #1e2124;
+  }
+  .el-icon-arrow-down {
+    font-size: 12px;
+  }
   height: 50px;
   overflow: hidden;
   position: relative;

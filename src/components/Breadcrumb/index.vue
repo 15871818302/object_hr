@@ -5,7 +5,7 @@
         <span
           v-if="item.redirect === 'noRedirect' || index == levelList.length - 1"
           class="no-redirect"
-        >江苏传智播客教育科技股份有限公司
+        >{{ $t('navbar.company') }}
           <span class="exp">体验版</span>
         </span>
         <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
@@ -30,6 +30,7 @@ export default {
     }
   },
   created() {
+    console.log(this.$i18n)
     this.getBreadcrumb()
   },
   methods: {

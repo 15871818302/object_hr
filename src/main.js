@@ -18,6 +18,7 @@ import '@/icons' // icon
 import '@/permission' // permission control
 // 导入批量注册组件的函数
 import '@/components'
+import i18n from '@/lang'
 
 /**
  * If you don't want to use mock-server
@@ -44,5 +45,6 @@ new Vue({
   el: '#app',
   router,
   store,
+  i18n,
   render: (h) => h(App)
 })
